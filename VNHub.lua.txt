@@ -20,11 +20,6 @@ local Combat = Window:MakeTab({
     Icon = "rbxassetid://11446825283",
     PremiumOnly = false
 })
-local Set = Window:MakeTab({
-    Name = "Setting",
-    Icon = "rbxassetid://11446835336",
-    PremiumOnly = false
-})
 local Farm = Window:MakeTab({
     Name = "Other Farm",
     Icon = "rbxassetid://11446859498",
@@ -58,6 +53,11 @@ local Shop = Window:MakeTab({
 local Misc = Window:MakeTab({
     Name = "Misc",
     Icon = "rbxassetid://7040410130",
+    PremiumOnly = false
+})
+local Set = Window:MakeTab({
+    Name = "Setting",
+    Icon = "rbxassetid://11446835336",
     PremiumOnly = false
 })
 local Code = Main:AddSection({ Name = "Code" })
