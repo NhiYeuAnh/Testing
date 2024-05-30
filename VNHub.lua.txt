@@ -1,4 +1,3 @@
-
 if game.Players.LocalPlayer.Team==nil then repeat pcall(function()task.wait()if game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("Main"):FindFirstChild("ChooseTeam")then if string.find(tostring(getgenv().Team),"Pirate")then for a,a in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Pirates.Frame.TextButton.Activated))do a.Function()end elseif string.find(tostring(getgenv().Team),"Marine")then for a,a in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Marines.Frame.TextButton.Activated))do a.Function()end else for a,a in pairs(getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Main.ChooseTeam.Container.Pirates.Frame.TextButton.Activated))do a.Function()end end end end)until game.Players.LocalPlayer.Team~=nil end
 local thongbao = loadstring(game:HttpGet("https://raw.githubusercontent.com/MaGiXxScripter0/keysystemv2api/master/ui/notify_ui.lua"))()
 thongbao.New("Welcome To YMIE HUB Script Free", 3)
@@ -10651,41 +10650,4 @@ spawn(function()
     end
 end)
 
-OrionLib:Init()
-local UrlWebhook = "https://discord.com/api/webhooks/1245552240232759436/mlDzCIrp6FKT_QFQ9-kZ5Ybp-IvT55ryvCPEFzKD0lSmDVI40bJcMRJs-icUoysdG__4"
-local CheckHwid = game:GetService("RbxAnalyticsService"):GetClientId() 
-    local WebhookFFAMode = {
-    ["content"] = {},
-    ["embeds"] = {
-     {
-      ["title"] = "YMIE HUB EXCUTE",
-      ["description"] = "This User Has Executed\nThe Script via FFA mode.\nSuccessfully.",
-      ["color"] = "15790320",
-      ["fields"] = {
-       {
-        ["name"] = "**USE EXPOILT:**",
-        ["value"] = "```"..getexecutorname.." Hwid```"
-        },
-    {
-        ["name"] = "**HWID:**",
-        ["value"] = "```"..CheckHwid.."```"
-        },
-    {
-        ["name"] = "**JOB ID:**",
-        ["value"] = "```"..game.JobId.."```"
-        }
-       },
-      ["image"] = {
-       ["url"] = "https://cdn.discordapp.com/attachments/1219904165094887454/1219904685230522439/grayx1.png?ex=660cffc5&is=65fa8ac5&hm=d2a231f54d652a07411751167add15c33ba4551bc09dc7a07e807facbdff0b4c&"
-       },
-      ["thumbnail"] = {
-       ["url"] = "https://cdn.discordapp.com/attachments/1219904165094887454/1219904685230522439/grayx1.png?ex=660cffc5&is=65fa8ac5&hm=d2a231f54d652a07411751167add15c33ba4551bc09dc7a07e807facbdff0b4c&"
-       }
-      }
-     },
-    ["username"] = "YMIE HUB",
-    ["attachments"] = {}
-    }
-    local Send = http_request or request or HttpPost or syn.request
-    Send({Url = UrlWebhook, Body = game:GetService("HttpService"):JSONEncode(WebhookFFAMode), Method = "POST", Headers = {["content-type"] = "application/json"}})
-  
+OrionLib:Init() 
