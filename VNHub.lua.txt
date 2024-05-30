@@ -17,7 +17,7 @@ local Main = Window:MakeTab({
 })
 local Combat = Window:MakeTab({
     Name = "Game Players",
-    Icon = "rbxassetid://1",
+    Icon = "rbxassetid://11446825283",
     PremiumOnly = false
 })
 local Set = Window:MakeTab({
@@ -10650,4 +10650,4 @@ spawn(function()
     end
 end)
 
-OrionLib:Init() 
+OrionLib:Init()
