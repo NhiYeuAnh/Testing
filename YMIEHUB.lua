@@ -2729,9 +2729,9 @@ spawn(function()
 	end
 	end
 	end)
-	local Mastery = Tabs.Main:AddSection("Mastery Farm")
+local Mastery = Tabs.Main:AddSection("Mastery Farm")
     local DropdownMastery = Tabs.Main:AddDropdown("DropdownMastery", {
-        Title = "Farm Mastery",
+        Title = "Farm Mastery ",
         Description = "",
         Values = {"Level","Near Farm",},
         Multi = false,
@@ -2874,16 +2874,90 @@ spawn(function()
       end
       end
       end)
-      Tabs.Main:AddButton({
-    Title = "Chest Farm",
-    Description = "",
-    Callback = function()
-        getgenv().JoinTeam = "Pirates"
-        getgenv().Stop_If_Has_Items = true
-        loadstring(game:HttpGet("https://github.com/PNguyen0199/Script/raw/main/Trash_Auto_Chest.lua"))()
-    end
+      local ToggleCastleRaid = Tabs.Main:AddToggle("ToggleCastleRaid", {
+        Title = "Auto Castle Raid",
+        Description = "", 
+        Default = false })
+    ToggleCastleRaid:OnChanged(function(Value)
+        getgenv().CastleRaid = Value
+    end)
+    Options.ToggleCastleRaid:SetValue(false)
+    spawn(function()
+        while wait() do
+            if getgenv().CastleRaid then
+                pcall(function()
+                    local CFrameCastleRaid = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
+                    if (CFrame.new(-5539.3115234375, 313.800537109375, -2972.372314453125).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 500 then
+                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                            if getgenv().CastleRaid and v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 then
+                                if (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 2000 then
+                                    repeat wait(getgenv().Fast_Delay)
+                                        AttackNoCoolDown()
+                                        AutoHaki()
+                                        EquipTool(SelectWeapon)
+                                        v.HumanoidRootPart.CanCollide = false
+                                        v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+                                        Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+                                    until v.Humanoid.Health <= 0 or not v.Parent or not getgenv().CastleRaid
+                                end
+                            end
+                        end
+                    else
+                        toTarget(CFrameCastleRaid)
+                     
+                      
+                    end
+                end)
+            end
+        end
+        end)
+        local ToggleMobAura = Tabs.Main:AddToggle("ToggleMobAura", {
+        Title = "Farm Near",
+        Description = "",
+        Default = false })
+    ToggleMobAura:OnChanged(function(Value)
+        getgenv().AutoNear = Value
+        if Value == false then
+            wait()
+            Tween(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame)
+            wait()
+        end
+    end)
+    Options.ToggleMobAura:SetValue(false)
+    spawn(function()
+        while wait(.1) do
+        if getgenv().AutoNear then
+        pcall(function()
+          for i,v in pairs (game.Workspace.Enemies:GetChildren()) do
+          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+          if v.Name then
+          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 5000 then
+            repeat wait(getgenv().Fast_Delay)
+                AttackNoCoolDown()
+                bringmob = true
+          AutoHaki()
+          EquipTool(SelectWeapon)
+          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+          v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+          v.HumanoidRootPart.Transparency = 1
+          v.Humanoid.JumpPower = 0
+          v.Humanoid.WalkSpeed = 0
+          v.HumanoidRootPart.CanCollide = false
+          FarmPos = v.HumanoidRootPart.CFrame
+          MonFarm = v.Name
+          --Click
+          until not getgenv().AutoNear or not v.Parent or v.Humanoid.Health <= 0 or not game.Workspace.Enemies:FindFirstChild(v.Name)
+          bringmob = false
+        end
+          end
+          end
+          end
+          end)
+        end
+        end
+      end)
 local Setting Farmer = Tabs.Setting:AddSection("Setting Farmer")
-local listfastattack = {'Normal','Mediaum',' Super Fast'}
+local listfastattack = {'Normal Attack','Mediaum Attack','Super Fast Attack'}
 
     local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
         Title = "Select Fast Attack",
@@ -2895,11 +2969,11 @@ local listfastattack = {'Normal','Mediaum',' Super Fast'}
     DropdownDelayAttack:SetValue("Fast Attack")
     DropdownDelayAttack:OnChanged(function(Value)
     getgenv().FastAttackFaiFao_Mode = Value
-	if getgenv().FastAttackFaiFao_Mode == "Normal" then
+	if getgenv().FastAttackFaiFao_Mode == "Normal Attack" then
 		getgenv().Fast_Delay = 0.1
-	elseif getgenv().FastAttackFaiFao_Mode == "Mediaum" then
+	elseif getgenv().FastAttackFaiFao_Mode == "Mediaum Attack" then
 		getgenv().Fast_Delay = 0.15
-	elseif getgenv().FastAttackFaiFao_Mode == "Super Fast" then
+	elseif getgenv().FastAttackFaiFao_Mode == "Super Fast Attack" then
 		getgenv().Fast_Delay = 0
 	end
 end)
@@ -2934,9 +3008,9 @@ end)
                             end
                         end
                     end
-                elseif ChooseWeapon == "Blox Fruit" then
+                elseif ChooseWeapon == "Fruits" then
                     for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
+                        if v.ToolTip == "Fruits" then
                             if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
                                 SelectWeapon = v.Name
                             end
@@ -2954,7 +3028,8 @@ end)
             end)
         end
     end)
-    Tabs.Setting:AddButton({
+
+Tabs.Setting:AddButton({
         Title = "Boost Fps",
         Description = "",
         Callback = function()
@@ -3002,25 +3077,8 @@ end)
                 e.Enabled = false
             end
         end
-     end
-     Tabs.Setting:AddButton({
-	Title = "Remove Fog",
-	Description = "",
-	Callback = function()
-        NoFog()
-    end
-})
-function NoFog()
-    local c = game.Lighting
-    c.FogEnd = 100000
-    for r, v in pairs(c:GetDescendants()) do
-        if v:IsA("Atmosphere") then
-            v:Destroy()
-        end
-    end
-end
-local Get Items = Tabs.Item:AddSection("Get Items")
-local Toggle = Tabs.Qs:AddToggle("MyToggle", {Title = "Auto Cursed Dual Katana", Default = false })
+   local Get Items = Tabs.Main:AddSection("Get Items")
+   local Toggle = Tabs.Qs:AddToggle("MyToggle", {Title = "Auto Cursed Dual Katana", Default = false })
 
     Toggle:OnChanged(function(Value)
         Auto_Cursed_Dual_Katana = Value
@@ -3459,8 +3517,7 @@ local Toggle = Tabs.Qs:AddToggle("MyToggle", {Title = "Auto Cursed Dual Katana",
             end
         end
     end)
-    
-    local ToggleAutoSoulGuitar = TMainItem:AddToggle("ToggleAutoSoulGuitar", {Title = "Auto Soul Guitar",Description = "", Default = false })
+    local ToggleAutoSoulGuitar = Tabs.Main:AddToggle("ToggleAutoSoulGuitar", {Title = "Auto Soul Guitar",Description = "", Default = false })
 ToggleAutoSoulGuitar:OnChanged(function(Value)
     _G.AutoSoulGuitar = value
 end)
@@ -3584,4 +3641,89 @@ end
 			end)
 		end
 end)
-
+local ToggleTushita = Tabs.Main:AddToggle("ToggleTushita", {Title = "Auto Tushita",Description = "", Default = false })
+        ToggleTushita:OnChanged(function(Value)
+            AutoTushita = Value
+        end)
+        Options.ToggleTushita:SetValue(false)
+           spawn(function()
+                   while wait() do
+                               if AutoTushita then
+                                   if game:GetService("Workspace").Enemies:FindFirstChild("Longma") then
+                                       for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                           if v.Name == ("Longma" or v.Name == "Longma") and v.Humanoid.Health > 0 and v:IsA("Model") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
+                                            repeat wait(getgenv().Fast_Delay)
+                                                AttackNoCoolDown()
+                                                   AutoHaki()
+                                                   if not game.Players.LocalPlayer.Character:FindFirstChild(SelectWeapon) then
+                                                       wait()
+                                                       EquipTool(SelectWeapon)
+                                                   end
+                                                   FarmPos = v.HumanoidRootPart.CFrame
+                                                     --Click
+                                                   v.HumanoidRootPart.Size = Vector3.new(60,60,60)
+                                                   v.Humanoid.JumpPower = 0
+                                                   v.Humanoid.WalkSpeed = 0
+                                                   v.HumanoidRootPart.CanCollide = false
+                                                   v.Humanoid:ChangeState(11)
+                                                   Tween(v.HumanoidRootPart.CFrame * Pos)
+                                               until not AutoTushita or not v.Parent or v.Humanoid.Health <= 0
+                                           end
+                                       end
+                                   else
+                                       Tween(CFrame.new(-10238.875976563, 389.7912902832, -9549.7939453125))
+                                   end
+                               end
+                           end
+                   end)
+local ToggleTushita = Tabs.Main:AddToggle("ToggleTushita", {Title = "Auto Tushita",Description = "Đánh Boss Longma để láy Tushita", Default = false })
+        ToggleTushita:OnChanged(function(Value)
+            AutoTushita = Value
+        end)
+        Options.ToggleTushita:SetValue(false)
+           spawn(function()
+                   while wait() do
+                               if AutoTushita then
+                                   if game:GetService("Workspace").Enemies:FindFirstChild("Longma") then
+                                       for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                           if v.Name == ("Longma" or v.Name == "Longma") and v.Humanoid.Health > 0 and v:IsA("Model") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
+                                            repeat wait(getgenv().Fast_Delay)
+                                                AttackNoCoolDown()
+                                                   AutoHaki()
+                                                   if not game.Players.LocalPlayer.Character:FindFirstChild(SelectWeapon) then
+                                                       wait()
+                                                       EquipTool(SelectWeapon)
+                                                   end
+                                                   FarmPos = v.HumanoidRootPart.CFrame
+                                                     --Click
+                                                   v.HumanoidRootPart.Size = Vector3.new(60,60,60)
+                                                   v.Humanoid.JumpPower = 0
+                                                   v.Humanoid.WalkSpeed = 0
+                                                   v.HumanoidRootPart.CanCollide = false
+                                                   v.Humanoid:ChangeState(11)
+                                                   Tween(v.HumanoidRootPart.CFrame * Pos)
+                                               until not AutoTushita or not v.Parent or v.Humanoid.Health <= 0
+                                           end
+                                       end
+                                   else
+                                       Tween(CFrame.new(-10238.875976563, 389.7912902832, -9549.7939453125))
+                                   end
+                               end
+                           end
+                   end)
+    local ToggleYama = Tabs.Main:AddToggle("ToggleYama", {Title = "Auto Get Yama",Description = "Need To 30 Elite", Default = false })
+           ToggleYama:OnChanged(function(Value)
+            getgenv().AutoYama = Value
+           end)
+           Options.ToggleYama:SetValue(false)
+           spawn(function()
+            while wait() do
+                if getgenv().AutoYama then
+                    if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EliteHunter","Progress") >= 30 then
+                        repeat wait(.1)
+                            fireclickdetector(game:GetService("Workspace").Map.Waterfall.SealedKatana.Handle.ClickDetector)
+                        until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Yama") or not getgenv().AutoYama
+                    end
+                end
+            end
+        end)
