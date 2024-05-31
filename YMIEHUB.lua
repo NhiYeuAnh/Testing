@@ -2499,25 +2499,93 @@ function to(p)
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 ---Close UI
-local ScreenGui1 = Instance.new("ScreenGui")
-local ImageButton1 = Instance.new("ImageButton")
-local UICorner = Instance.new("UICorner")
-local UIGradient = Instance.new("UIGradient")
-local UIStroke = Instance.new("UIStroke")
-ScreenGui1.Name = "ImageButton"
-ScreenGui1.Parent = game.CoreGui
-ScreenGui1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+local AzureGui = Instance.new("ScreenGui")
+    local ToggleUIButton = Instance.new("TextButton")
+    local UICorner_10 = Instance.new("UICorner")
+    local Frame = Instance.new("Frame")
 
-ImageButton1.Parent = ScreenGui1
-ImageButton1.BackgroundColor3 = Color3.fromRGB(0, 239, 5)
-ImageButton1.BorderSizePixel = 0
-ImageButton1.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
-ImageButton1.Size = UDim2.new(0, 50, 0, 50)
-ImageButton1.Draggable = true
-ImageButton1.Image = "rbxassetid://17663245942"
-ImageButton1.MouseButton1Down:connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true,Enum.KeyCode.End,false,game)
-end)
+    AzureGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    AzureGui.Name = "AzureGui"
+    AzureGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    ToggleUIButton.Name = "ToggleUIButton"
+    ToggleUIButton.Parent = AzureGui
+    ToggleUIButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    ToggleUIButton.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
+    ToggleUIButton.Size = UDim2.new(0, 50, 0, 50)
+    ToggleUIButton.Text = "OFF"
+    ToggleUIButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleUIButton.TextSize = 15.000
+    ToggleUIButton.TextWrapped = true
+    ToggleUIButton.Visible = true
+
+    UICorner_10.Parent = ToggleUIButton
+
+    local toggleState = true
+
+    ToggleUIButton.MouseButton1Click:Connect(
+        function()
+            toggleState = not toggleState -- Toggling the state
+            if toggleState then
+                ToggleUIButton.Text = "OFF"
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+            else
+                ToggleUIButton.Text = "ON"
+                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+            end
+        end
+    )
+
+    local function drag()
+        local script = Instance.new("LocalScript", ToggleUIButton)
+        local UIS = game:GetService("UserInputService")
+        local frame = script.Parent
+        local dragToggle = nil
+        local dragSpeed = 0.25
+        local dragStart = nil
+        local startPos = nil
+
+        local function updateInput(input)
+            local delta = input.Position - dragStart
+            local position =
+                UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            game:GetService("TweenService"):Create(frame, TweenInfo.new(dragSpeed), {Position = position}):Play()
+        end
+
+        frame.InputBegan:Connect(
+            function(input)
+                if
+                    (input.UserInputType == Enum.UserInputType.MouseButton1 or
+                        input.UserInputType == Enum.UserInputType.Touch)
+                 then
+                    dragToggle = true
+                    dragStart = input.Position
+                    startPos = frame.Position
+                    input.Changed:Connect(
+                        function()
+                            if input.UserInputState == Enum.UserInputState.End then
+                                dragToggle = false
+                            end
+                        end
+                    )
+                end
+            end
+        )
+
+        UIS.InputChanged:Connect(
+            function(input)
+                if
+                    input.UserInputType == Enum.UserInputType.MouseMovement or
+                        input.UserInputType == Enum.UserInputType.Touch
+                 then
+                    if dragToggle then
+                        updateInput(input)
+                    end
+                end
+            end
+        )
+    end
+    coroutine.wrap(drag)()
 --------------------------------------------------------------------------------------------------------------------------------------------
 --Remove Effect
 if game:GetService("ReplicatedStorage").Effect.Container:FindFirstChild("Death") then
